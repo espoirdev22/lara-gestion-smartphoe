@@ -30,11 +30,13 @@
                 </div>
                 <div class="flex items-center space-x-6">
                     <a href="" class="text-gray-600 hover:text-gray-900">Track Order</a>
-                    <a href="" class="text-gray-600 hover:text-gray-900">Dashboard</a>
-                    <form method="POST" action="" class="inline">
-                        @csrf
-                        <button type="submit" class="text-gray-600 hover:text-gray-900">Logout</button>
-                    </form>
+                    <a href="{{ route('auth.login') }}" class="text-gray-600 hover:text-gray-900">Dashboard</a>
+                    @auth
+                        <form action="{{ route('auth.logout') }}" method="POST">
+                            @csrf
+                            <button type="submit">Se Déconnecter</button>
+                        </form>
+                    @endauth
                 </div>
             </div>
             
@@ -47,55 +49,54 @@
                     <span class="text-2xl font-bold text-gray-900">Shopping</span>
                 </a>
                 
-                <div class="flex-1 max-w-2xl mx-8">
-            <div class="flex">
-                <select class="px-4 py-2 border-r rounded-l bg-white">
-                    <option>All Category</option>
-                </select>
-                <input
-                    type="text"
-                    placeholder="Search Products Here....."
-                    class="flex-1 px-4 py-2 border-l"
-                />
-                <button class="bg-gray-800 text-white px-6 py-2 rounded-r">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
+                <div class="mb-6 relative">
+    <form id="search-form" action="{{ route('smartphones.index') }}" method="GET" class="flex">
+        <div class="relative flex-1">
+            <input 
+                type="text" 
+                name="nom" 
+                id="search-input"
+                value="{{ request()->input('nom') }}" 
+                placeholder="Rechercher un smartphone..."
+                class="w-full px-4 py-2 pl-10 border rounded-l focus:outline-none focus:ring-2 focus:ring-purple-500"
+                autocomplete="off"
+            >
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
             </div>
         </div>
-                
-                <div class="flex items-center space-x-6">
-                    <a href="" class="relative group">
-                        <svg class="w-6 h-6 group-hover:text-gray-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                        <span class="absolute -top-2 -right-2 bg-purple-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                     
-                        </span>
-                    </a>
-                    <a href="" class="relative group">
-                        <svg class="w-6 h-6 group-hover:text-gray-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                        </svg>
-                        <span class="absolute -top-2 -right-2 bg-purple-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                          
-                        </span>
-                    </a>
-                </div>
+        <button type="submit" class="bg-gray-800 text-white px-6 py-2 rounded-r hover:bg-gray-700 transition-colors flex items-center gap-2">
+            <span>Rechercher</span>
+        </button>
+    </form>
+
+    <!-- Loading indicator -->
+    <div id="search-loading" class="hidden absolute right-20 top-1/2 transform -translate-y-1/2">
+        <svg class="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+    </div>
+</div>
+
             </div>
             
             <!-- Navigation -->
-<nav class="bg-gray-800 text-white rounded-lg mt-4">
+            <!-- Navigation -->
+
+        </div>
+        <nav class="w-full bg-gray-800 text-white mt-4">
     <div class="container mx-auto">
-        <ul class="flex space-x-8 py-4 px-6">
+        <ul class="flex items-center justify-between md:justify-start md:space-x-8 py-4 px-4 md:px-6">
             <li>
                 <a href="{{ route('home') }}" class="hover:text-gray-300 transition-colors {{ request()->is('/') ? 'text-purple-400' : 'text-white' }}">
                     Home
                 </a>
             </li>
             <li>
-                <a href="/about" class="hover:text-gray-300 transition-colors {{ request()->is('about') ? 'text-purple-400' : 'text-white' }}">
+                <a href="#footer" class="hover:text-gray-300 transition-colors {{ request()->is('about') ? 'text-purple-400' : 'text-white' }}">
                     About Us
                 </a>
             </li>
@@ -116,14 +117,13 @@
                 </a>
             </li>
             <li>
-                <a href="/contact" class="hover:text-gray-300 transition-colors {{ request()->is('contact') ? 'text-purple-400' : 'text-white' }}">
+                <a href="#footer" class="hover:text-gray-300 transition-colors {{ request()->is('contact') ? 'text-purple-400' : 'text-white' }}">
                     Contact Us
                 </a>
             </li>
         </ul>
     </div>
 </nav>
-        </div>
     </header>
 
     <main class="flex-grow">
@@ -142,7 +142,7 @@
         @yield('content')
     </main>
 
-    <footer class="bg-gray-800 text-white mt-12">
+    <footer class="bg-gray-800 text-white mt-12 " id="footer">
         <div class="container mx-auto px-4 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>

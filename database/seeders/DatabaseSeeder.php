@@ -28,5 +28,8 @@ class DatabaseSeeder extends Seeder
             'ecran' => '6.2 pouces',
             'couleurs_disponibles' => 'Noir, Bleu, Argent',
         ]);
+        
+       
     }
+   
 }

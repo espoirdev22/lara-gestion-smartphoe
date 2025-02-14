@@ -10,7 +10,7 @@ class Smartphone extends Model
     use HasFactory; // Assurez-vous que cette ligne est bien présente
 
     protected $fillable = [
-        'nom', 'marque', 'description', 'prix', 'photo', 
+        'id','nom', 'marque', 'description', 'prix', 'photo', 
         'ram', 'rom', 'ecran', 'couleurs_disponibles'
     ];
 }

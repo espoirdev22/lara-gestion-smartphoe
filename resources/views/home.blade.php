@@ -49,32 +49,20 @@
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 group-hover:text-gray-700 line-clamp-2">{{ $smartphone->nom }}</h3>
                     <p class="mt-2 text-sm text-gray-600">{{ $smartphone->marque }}</p>
-                    <div class="mt-3 flex items-center justify-between">
-                        <span class="text-xl font-bold text-gray-900">${{ number_format($smartphone->prix, 2) }}</span>
-                    </div>
+                    
 
-                    <div class="mt-4 text-sm text-gray-600">
-                        <p>RAM: {{ $smartphone->ram }}</p>
-                        <p>Storage: {{ $smartphone->rom }}</p>
-                        <p>Screen: {{ $smartphone->ecran }}</p>
-                    </div>
+                    
 
-                    <div class="mt-6 flex gap-2">
-                        <button 
-                            class="flex-1 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2.5 rounded-lg transition-colors text-sm font-medium"
-                            onclick="handleCart({{ $smartphone->id }})"
-                        >
-                            Add to Cart
-                        </button>
-                        <button 
-                            class="p-2.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-                            onclick="handleWishlist({{ $smartphone->id }})"
-                        >
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                            </svg>
-                        </button>
-                    </div>
+                    <div class="mt-6">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-2xl font-bold text-gray-900">{{ number_format($smartphone->prix, 2) }} cfa</span>
+                                    <a
+                                        href="{{ route('smartphones.show', $smartphone) }}"
+                                        class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
                 </div>
             </div>
             @empty
@@ -92,32 +80,6 @@
     </div>
 </section>
 
-@push('scripts')
-<script>
-const handleCart = async (id) => {
-    try {
-        const response = await fetch(`/cart/add/${id}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
-        const data = await response.json();
-        if (data.success) {
-            updateCartCounter(data.cartCount);
-            alert('Product added to cart successfully');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to add product to cart');
-    }
-};
 
-const handleWishlist = async (id) => {
-    // Similar implementation as handleCart
-};
-</script>
-@endpush
+
 @endsection

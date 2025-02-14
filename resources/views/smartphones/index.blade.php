@@ -8,62 +8,48 @@
             <ol class="flex items-center space-x-2">
                 <li><a href="{{ route('home') }}" class="text-gray-500 hover:text-gray-700">Home</a></li>
                 <li><span class="text-gray-400">/</span></li>
-                <li> <a href="{{ route('smartphones.index') }}" class="text-gray-900">Smartphones</a></li>
+                <li><a href="{{ route('smartphones.index') }}" class="text-gray-900">Smartphones</a></li>
             </ol>
         </nav>
 
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- Sidebar Filters -->
-            <div class="lg:w-64 flex-shrink-0">
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <h2 class="text-lg font-semibold mb-4">Categories</h2>
-                    <div class="space-y-3">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="brand1" class="rounded border-gray-300">
-                            <label for="brand1" class="ml-2 text-gray-700">Samsung</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="brand2" class="rounded border-gray-300">
-                            <label for="brand2" class="ml-2 text-gray-700">Apple</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="brand3" class="rounded border-gray-300">
-                            <label for="brand3" class="ml-2 text-gray-700">Xiaomi</label>
-                        </div>
+            <!-- Remplacer toute la section des filtres par ce code simple -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <form action="{{ route('smartphones.index') }}" method="GET">
+                    <!-- Filtre par marque -->
+                    <div class="mb-6">
+                        <label for="marque" class="block text-lg font-semibold mb-4">Marque</label>
+                        <select name="marque" id="marque" class="w-full rounded-md border-gray-300 shadow-sm" onchange="this.form.submit()">
+                            <option value="">Toutes les marques</option>
+                            <option value="Samsung" {{ request('marque') == 'Samsung' ? 'selected' : '' }}>Samsung</option>
+                            <option value="Apple" {{ request('marque') == 'Apple' ? 'selected' : '' }}>Apple</option>
+                            <option value="Xiaomi" {{ request('marque') == 'Xiaomi' ? 'selected' : '' }}>Xiaomi</option>
+                        </select>
                     </div>
 
-                    <hr class="my-6">
-
-                    <h2 class="text-lg font-semibold mb-4">Price Range</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-sm text-gray-600">Min Price</label>
-                            <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="0">
-                        </div>
-                        <div>
-                            <label class="text-sm text-gray-600">Max Price</label>
-                            <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" placeholder="2000">
-                        </div>
+                    <!-- Filtre par prix -->
+                    <div class="mb-6">
+                        <label for="prix" class="block text-lg font-semibold mb-4">Prix</label>
+                        <select name="prix" id="prix" class="w-full rounded-md border-gray-300 shadow-sm" onchange="this.form.submit()">
+                            <option value="">Tous les prix</option>
+                            <option value="0-100000" {{ request('prix') == '0-100000' ? 'selected' : '' }}>Moins de 100 000 CFA</option>
+                            <option value="100000-300000" {{ request('prix') == '100000-300000' ? 'selected' : '' }}>100 000 - 300 000 CFA</option>
+                            <option value="300000+" {{ request('prix') == '300000+' ? 'selected' : '' }}>Plus de 300 000 CFA</option>
+                        </select>
                     </div>
 
-                    <hr class="my-6">
-
-                    <h2 class="text-lg font-semibold mb-4">Storage</h2>
-                    <div class="space-y-3">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="storage1" class="rounded border-gray-300">
-                            <label for="storage1" class="ml-2 text-gray-700">64GB</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="storage2" class="rounded border-gray-300">
-                            <label for="storage2" class="ml-2 text-gray-700">128GB</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="storage3" class="rounded border-gray-300">
-                            <label for="storage3" class="ml-2 text-gray-700">256GB</label>
-                        </div>
+                    <!-- Filtre par stockage -->
+                    <div class="mb-6">
+                        <label for="stockage" class="block text-lg font-semibold mb-4">Stockage</label>
+                        <select name="stockage" id="stockage" class="w-full rounded-md border-gray-300 shadow-sm" onchange="this.form.submit()">
+                            <option value="">Tous les stockages</option>
+                            <option value="64" {{ request('stockage') == '64' ? 'selected' : '' }}>64 GB</option>
+                            <option value="128" {{ request('stockage') == '128' ? 'selected' : '' }}>128 GB</option>
+                            <option value="256" {{ request('stockage') == '256' ? 'selected' : '' }}>256 GB</option>
+                        </select>
                     </div>
-                </div>
+                </form>
             </div>
 
             <!-- Main Content -->
@@ -101,12 +87,11 @@
                     <div class="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
                         <div class="relative aspect-w-1 aspect-h-1 rounded-t-xl overflow-hidden">
                             <a href="{{ route('smartphones.show', $smartphone) }}">
-                                <img 
-                                src="{{ $smartphone->photo}}" 
-                                    alt="{{ $smartphone->nom }}" 
+                                <img
+                                    src="{{ $smartphone->photo }}"
+                                    alt="{{ $smartphone->nom }}"
                                     class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-                                    loading="lazy"
-                                >
+                                    loading="lazy">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             </a>
                         </div>
@@ -116,7 +101,7 @@
                                 {{ $smartphone->nom }}
                             </h3>
                             <p class="mt-2 text-sm text-gray-600">{{ $smartphone->marque }}</p>
-                            
+
                             <div class="mt-4 space-y-2">
                                 <div class="flex items-center text-sm text-gray-600">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,32 +124,25 @@
                             </div>
 
                             <div class="mt-6">
-                                <div class="flex items-center justify-between mb-4">
-                                    <span class="text-2xl font-bold text-gray-900">${{ number_format($smartphone->prix, 2) }}</span>
-                                </div>
-                                
-                                <div class="flex gap-2">
-                                    <button 
-                                        class="flex-1 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2.5 rounded-lg transition-colors text-sm font-medium"
-                                        onclick="handleCart({{ $smartphone->id }})"
-                                    >
-                                        Add to Cart
-                                    </button>
-                                    <button 
-                                        class="p-2.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-                                        onclick="handleWishlist({{ $smartphone->id }})"
-                                    >
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                        </svg>
-                                    </button>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-2xl font-bold text-gray-900">{{ number_format($smartphone->prix, 2) }} cfa</span>
+                                    <a
+                                        href="{{ route('smartphones.show', $smartphone) }}"
+                                        class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors">
+                                        View Details
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     @empty
-                    <div class="col-span-full text-center py-12">
-                        <p class="text-gray-500">No smartphones available</p>
+                    <div class="col-span-full text-center py-8">
+                        <p class="text-gray-500 text-lg">Aucun smartphone trouvé</p>
+                        @if(request()->filled('nom'))
+                        <a href="{{ route('smartphones.index') }}" class="text-purple-600 hover:text-purple-700 mt-2 inline-block">
+                            Réinitialiser la recherche
+                        </a>
+                        @endif
                     </div>
                     @endforelse
                 </div>
@@ -179,50 +157,4 @@
         </div>
     </div>
 </div>
-
-@push('scripts')
-<script>
-const handleCart = async (id) => {
-    try {
-        const response = await fetch(`/cart/add/${id}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
-        const data = await response.json();
-        if (data.success) {
-            updateCartCounter(data.cartCount);
-            alert('Product added to cart successfully');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to add product to cart');
-    }
-};
-
-const handleWishlist = async (id) => {
-    try {
-        const response = await fetch(`/wishlist/add/${id}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
-        const data = await response.json();
-        if (data.success) {
-            updateWishlistCounter(data.wishlistCount);
-            alert('Product added to wishlist successfully');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to add product to wishlist');
-    }
-};
-</script>
-@endpush
 @endsection

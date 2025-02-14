@@ -1,153 +1,116 @@
-<!-- resources/views/smartphones/show.blade.php -->
 @extends('layouts.app')
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <!-- Breadcrumb -->
-    <nav class="flex mb-8">
-        <ol class="flex items-center space-x-2">
-            <li><a href="/" class="text-gray-600 hover:text-gray-900">Home</a></li>
-            <li class="text-gray-400">/</li>
-            <li><a href="{{ route('smartphones.index') }}" class="text-gray-600 hover:text-gray-900">Smartphones</a></li>
-            <li class="text-gray-400">/</li>
-            <li class="text-gray-900">{{ $smartphone->nom }}</li>
+    <nav class="mb-8" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-2 text-sm">
+            <li>
+                <a href="/" class="text-blue-600 hover:text-blue-800 transition-colors">
+                    Accueil
+                </a>
+            </li>
+            <li class="text-gray-500">/</li>
+            <li>
+                <a href="{{ route('smartphones.index') }}" class="text-blue-600 hover:text-blue-800 transition-colors">
+                    Smartphones
+                </a>
+            </li>
+            <li class="text-gray-500">/</li>
+            <li class="text-gray-900 font-medium">{{ $smartphone->nom }}</li>
         </ol>
     </nav>
 
     <!-- Product Details -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Image Section -->
-        <div class="space-y-4">
-            <div class="bg-white p-4 rounded-lg shadow">
+        <div>
+            <div class="bg-white p-6 rounded-xl shadow-sm">
                 <img 
                     src="{{ $smartphone->photo }}" 
                     alt="{{ $smartphone->nom }}" 
                     class="w-full h-auto object-cover rounded-lg"
+                    loading="lazy"
                 >
             </div>
         </div>
 
         <!-- Info Section -->
-        <div class="space-y-6">
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $smartphone->nom }}</h1>
-                
-                <div class="flex items-center gap-4 mb-6">
-                    <span class="text-3xl font-bold text-gray-900">${{ number_format($smartphone->prix, 2) }}</span>
-                    @if($smartphone->regular_prix > $smartphone->sale_prix)
-                        <span class="text-xl text-gray-500 line-through">${{ number_format($smartphone->regular_prix, 2) }}</span>
-                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
-                            -{{ round((($smartphone->regular_prix - $smartphone->sale_prix) / $smartphone->regular_prix) * 100) }}%
+        <div class="space-y-8">
+            <div class="bg-white p-8 rounded-xl shadow-sm">
+                <!-- Title and Price -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $smartphone->nom }}</h1>
+                    
+                    <div class="flex items-baseline gap-3">
+                        <span class="text-3xl font-bold text-gray-900">
+                            {{ number_format($smartphone->prix, 2) }} cfa
                         </span>
-                    @endif
+                        @if($smartphone->regular_prix > $smartphone->sale_prix)
+                            <span class="text-xl text-gray-500 line-through">
+                                {{ number_format($smartphone->regular_prix, 2) }} cfa
+                            </span>
+                            <span class="bg-green-100 text-green-800 px-4 py-1 rounded-full text-sm font-semibold">
+                                -{{ round((($smartphone->regular_prix - $smartphone->sale_prix) / $smartphone->regular_prix) * 100) }}%
+                            </span>
+                        @endif
+                    </div>
                 </div>
 
-                <div class="prose max-w-none mb-6">
-                    <p class="text-gray-600">{{ $smartphone->description }}</p>
+                <!-- Description -->
+                <div class="prose prose-sm max-w-none mb-8">
+                    <h2 class="text-xl font-semibold mb-3">Description</h2>
+                    <p class="text-gray-600 leading-relaxed">{{ $smartphone->description }}</p>
                 </div>
 
                 <!-- Specifications -->
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <span class="text-sm text-gray-500">Brand</span>
-                        <p class="font-medium text-gray-900">{{ $smartphone->marque }}</p>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <span class="text-sm text-gray-500">RAM</span>
-                        <p class="font-medium text-gray-900">{{ $smartphone->ram }}</p>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <span class="text-sm text-gray-500">Storage</span>
-                        <p class="font-medium text-gray-900">{{ $smartphone->rom }}</p>
-                    </div>
-                    <div class="bg-gray-50 p-4 rounded-lg">
-                        <span class="text-sm text-gray-500">Screen</span>
-                        <p class="font-medium text-gray-900">{{ $smartphone->ecran }}</p>
+                <div class="space-y-6">
+                    <h2 class="text-xl font-semibold">Caractéristiques</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <span class="text-sm text-gray-600 block mb-1">Marque</span>
+                            <p class="font-medium text-gray-900">{{ $smartphone->marque }}</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <span class="text-sm text-gray-600 block mb-1">Mémoire RAM</span>
+                            <p class="font-medium text-gray-900">{{ $smartphone->ram }}</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <span class="text-sm text-gray-600 block mb-1">Stockage</span>
+                            <p class="font-medium text-gray-900">{{ $smartphone->rom }}</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <span class="text-sm text-gray-600 block mb-1">Écran</span>
+                            <p class="font-medium text-gray-900">{{ $smartphone->ecran }}</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <span class="text-sm text-gray-600 block mb-1">couleur</span>
+                            <p class="font-medium text-gray-900">{{ $smartphone->couleurs_disponibles }}</p>
+                        </div>
+                     
                     </div>
                 </div>
 
-                <!-- Actions -->
-                <div class="flex gap-4">
-                    <button 
-                        onclick="handleCart({{ $smartphone->id }})"
-                        class="flex-1 bg-gray-800 hover:bg-gray-700 text-white px-8 py-3 rounded-lg transition-colors"
-                        {{ $smartphone->is_sold_out ? 'disabled' : '' }}
-                    >
-                        {{ $smartphone->is_sold_out ? 'Sold Out' : 'Add to Cart' }}
-                    </button>
-                    <button 
-                        onclick="handleWishlist({{ $smartphone->id }})"
-                        class="p-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                    >
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                        </svg>
-                    </button>
+                <!-- Availability Status -->
+                <div class="mt-8">
+                    @if($smartphone->is_sold_out)
+                        <div class="bg-red-50 text-red-700 px-4 py-3 rounded-lg inline-flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                            Produit momentanément indisponible
+                        </div>
+                    @else
+                        <div class="bg-green-50 text-green-700 px-4 py-3 rounded-lg inline-flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            En stock
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-@push('scripts')
-<script>
-const handleCart = async (id) => {
-    try {
-        const response = await fetch(`/cart/add/${id}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            updateCartCounter(data.cartCount);
-            showNotification('Product added to cart successfully', 'success');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        showNotification('Failed to add product to cart', 'error');
-    }
-};
-
-const handleWishlist = async (id) => {
-    try {
-        const response = await fetch(`/wishlist/add/${id}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            updateWishlistCounter(data.wishlistCount);
-            showNotification('Product added to wishlist successfully', 'success');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        showNotification('Failed to add product to wishlist', 'error');
-    }
-};
-
-const updateCartCounter = (count) => {
-    document.querySelector('.cart-count').textContent = count;
-};
-
-const updateWishlistCounter = (count) => {
-    document.querySelector('.wishlist-count').textContent = count;
-};
-
-const showNotification = (message, type) => {
-    alert(message);
-};
-</script>
-@endpush
 @endsection
